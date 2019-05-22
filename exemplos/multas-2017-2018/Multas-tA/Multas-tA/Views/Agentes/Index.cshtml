@@ -1,0 +1,49 @@
+﻿@model IEnumerable<Multas_tA.Models.Agentes>
+
+@{
+    ViewBag.Title = "Agentes";
+}
+
+<h2>Listagem de Agentes</h2>
+
+<p>
+    @Html.ActionLink("Adicionar novo Agente", "Create")
+</p>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Esquadra )
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Fotografia)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var agente in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => agente.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => agente.Esquadra)
+        </td>
+        <td>
+            @*@Html.DisplayFor(modelItem => agente.Fotografia )*@
+           <a href="~/imagens/@agente.Fotografia" target="_blank">
+              <img src="~/imagens/@agente.Fotografia" width="50" height="37" />
+           </a>
+        </td>
+        <td>
+            @Html.ActionLink("Editar", "Edit", new { id=agente.ID }) |
+            @Html.ActionLink("Detalhes", "Details", new { id=agente.ID }) |
+            @Html.ActionLink("Apagar", "Delete", new { id=agente.ID })
+        </td>
+    </tr>
+}
+
+</table>

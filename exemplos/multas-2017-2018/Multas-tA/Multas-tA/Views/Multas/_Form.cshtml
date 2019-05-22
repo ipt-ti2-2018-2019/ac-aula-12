@@ -1,0 +1,67 @@
+﻿@* O 'web.config' na pasta das Views permite controlar os namespaces importados automaticamente... *@
+@model MultaFormModel
+
+@*
+    Esta partial view pode ser usada noutras views através do método @Html.Partial
+    Ver Create.cshtml.
+*@
+
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+@Html.HiddenFor(model => model.ID)
+
+<div class="form-group">
+    @Html.LabelFor(model => model.Infracao, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.Infracao, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.Infracao, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.LocalDaMulta, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.LocalDaMulta, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.LocalDaMulta, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ValorMulta, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.ValorMulta, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.ValorMulta, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.DataDaMulta, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.EditorFor(model => model.DataDaMulta, new { htmlAttributes = new { @class = "form-control" } })
+        @Html.ValidationMessageFor(model => model.DataDaMulta, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.AgenteFK, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.AgenteFK, Model.AgentesSelectList, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.AgenteFK, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.CondutorFK, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.CondutorFK, Model.CondutoresSelectList, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.CondutorFK, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+<div class="form-group">
+    @Html.LabelFor(model => model.ViaturaFK, htmlAttributes: new { @class = "control-label col-md-2" })
+    <div class="col-md-10">
+        @Html.DropDownListFor(model => model.ViaturaFK, Model.ViaturasSelectList, htmlAttributes: new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model.ViaturaFK, "", new { @class = "text-danger" })
+    </div>
+</div>

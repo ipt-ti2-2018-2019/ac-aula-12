@@ -1,0 +1,69 @@
+﻿@model IEnumerable<Multas_tA.Models.Multas>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Agente.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Condutor.Nome)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Viatura.Matricula)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Infracao)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.LocalDaMulta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValorMulta)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DataDaMulta)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Agente.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Condutor.Nome)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Viatura.Matricula)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Infracao)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.LocalDaMulta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ValorMulta)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DataDaMulta)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

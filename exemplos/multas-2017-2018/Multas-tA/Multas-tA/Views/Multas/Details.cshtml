@@ -1,0 +1,74 @@
+﻿@model Multas_tA.Models.Multas
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>Multas</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Agente.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Agente.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Condutor.Nome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Condutor.Nome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Viatura.Matricula)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Viatura.Matricula)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Infracao)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Infracao)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.LocalDaMulta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.LocalDaMulta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ValorMulta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ValorMulta)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DataDaMulta)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DataDaMulta)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

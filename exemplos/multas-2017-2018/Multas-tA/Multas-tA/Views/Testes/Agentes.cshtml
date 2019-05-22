@@ -1,0 +1,278 @@
+﻿@* 
+    Exemplo integrado que usa as funções do controller Api/AgentesController.cs
+
+    Para listar (GetAgentes()) e adicionar (PostAgentes(Agentes agente)) Agentes.
+*@
+
+
+@{
+    ViewBag.Title = "Listagem e adição de Agentes via AJAX + JSON + Web API";
+}
+
+<h2>Listagem e adição de Agentes via AJAX + JSON + Web API</h2>
+
+<div class="container">
+    @* 
+        Container da grelha de agentes. 
+        Irá conter os divs com informação sobre agentes.
+    *@
+    <div class="row" id="grelha-agentes"></div>
+
+    @* Linha horizontal. *@
+    <hr />
+
+    @*
+        Formulário para adicionar um agente.
+        "Incompleto", não tem suporte para fotografia.
+    *@
+    <form id="adicionar-agente">
+        @* Campo do nome *@
+        <div class="form-group">
+            @*
+                O <label> é o elemento que se deve usar quando se
+                querem fazer labels para <input>s ou <select>s.
+
+                O atributo "for" é usado como ponteiro para o elemento
+                com o ID respetivo, e melhora a acessibilidade do site,
+                porque torna os campos mais perceptíveis para utilizadores
+                com leitores de ecrã, e clicar nas labels ativa os campos
+                respetivos (sem necessidade de links)
+            *@
+            <label for="nome" class="control-label">Nome</label>
+            <input required class="form-control" type="text" name="nome" id="nome" />
+        </div>
+
+        @* Campo da esquadra *@
+        <div class="form-group">
+            <label for="esquadra" class="control-label">Esquadra</label>
+            <input required class="form-control" type="text" name="esquadra" id="esquadra" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Adicionar agente</button>
+    </form>
+</div>
+
+@* 
+    Ver Views/Shared/Layout.cshtml para mais informações sobre 
+    secções em Razor.
+*@
+@section scripts {
+
+@* 
+    Container para "templates". Adiciono a classe "hidden" do Bootstrap (3)
+    para que os conteúdos não sejam visíveis para o utilizador.
+*@
+<div class="hidden">
+    @*
+        "Template" HTML de um agente.
+
+        Em vez de construir o HTML todo manualmente
+        através de JavaScript (document.createElement, entre outros),
+        crio um "esqueleto", e uso a função "cloneNode" (ver função "divAgente")
+        para criar cópias.
+
+        Isto pode ser usado, desde que se tenha cuidado para REMOVER
+        os atributos "ID" dos elementos clonados (não devem existir múltiplos elementos HTML
+        com o mesmo ID).
+    *@
+    <div id="template-agente" class="col-sm-3">
+        @* 
+            Ver:
+            http://getbootstrap.com/docs/3.3/components/#thumbnails 
+        *@
+        <a href="#" class="thumbnail">
+            @* Imagem do agente. *@
+            <img class="img-responsive" />
+
+            <div class="caption">
+                @* Nome do agente. *@
+                <h3></h3>
+
+                @* Esquadra e outras informações. *@
+                <p></p>
+            </div>
+        </a>
+    </div>
+</div>
+
+@*
+    Nota: o @@ abaixo é por causa do Razor, é transformado em apenas um @
+    quando vai para o HTML.
+
+    Se estivesse num ficheiro JavaScript (coisa que não fiz para estar tudo junto,
+    e ser mais fácil de ler de uma só vez), não colocaria @@ nos comentários de documentação.
+
+    ---
+
+    # Comentários /** em JavaScript:
+
+    O uso de @param e @returns ajuda o Visual Studio e outras ferramentas
+    com IntelliSense.
+
+    Quando eu faço
+    @returns {Promise<Array<{ ID: number, Nome: string, Esquadra: string, Fotografia: string | null }>}
+
+    Estou a dizer que a função devolve:
+    - Objectos do tipo Promise<>
+    - Cujo tipo de dados (no .then) é Array<>
+    - Cada item do Array (definido entre <>) é um objeto ({}) com o seguinte formato:
+    -- ID: número,
+    -- Nome: string,
+    -- Esquadra: string,
+    -- Fotografia: string, ou NULL.
+
+    ---
+
+    #  "var" vs. "let".
+
+    O "let" foi introduzido no ES2015 como uma nova metodologia para definir variáveis em
+    JavaScript.
+    Eu expliquei os detalhes no vídeo da solução do exercício da Discoteca, mas
+    para ser breve, o "var" só se usa em browsers antigos. O let tem menos
+    problemas, especialmente quando se fazem funções dentro de loops.
+*@
+<script>
+
+    ///////////////////////////////////////////////////////
+    // Leitura de dados
+    ///////////////////////////////////////////////////////
+
+    /**
+     * Função que vai buscar uma lista de agentes.
+     *
+     * @@returns {Promise<Array<{ ID: number, Nome: string, Esquadra: string, Fotografia: string | null }>}
+     */
+    function getAgentes() {
+        return fetch("/api/agentes", {
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(resposta => resposta.json()); // JSON dos agentes.
+    }
+
+    ///////////////////////////////////////////////////////
+    // Mostrar dados no ecrã
+    ///////////////////////////////////////////////////////
+
+    /**
+     * Cria um div para um agente.
+     *
+     * @@param {{ ID: number, Nome: string, Esquadra: string, Fotografia: string | null }} agente
+     * @@returns {HTMLDivElement}
+     */
+    function divAgente(agente) {
+        /**
+         * Crio uma cópia do elemento HTML com ID "template-agente"
+         * com a função "cloneNode". O "true" no "cloneNode" é para indicar
+         * que quero também copiar os elementos filho.
+         *
+         * @@type {HTMLDivElement}
+         */
+        let template = document.querySelector('#template-agente').cloneNode(true);
+
+        // Não se permitem IDs duplicados...
+        template.removeAttribute('id');
+
+        // A partir do template, obter o <img />
+        let fotoAgente = template.querySelector('img');
+
+        // Se o Agente tiver fotografia, uso-a.
+        // caso contrário, escondo a imagem.
+        if (agente.Fotografia != null) {
+            fotoAgente.src = `/imagens/${agente.Fotografia}`;
+        } else {
+            fotoAgente.classList.add('hidden');
+        }
+
+        // Defino o nome e a esquadra no template...
+        template.querySelector('.caption > h3').textContent = agente.Nome;
+        template.querySelector('.caption > p').textContent = `Esquadra: ${agente.Esquadra}`;
+
+        return template;
+    }
+
+    /**
+     * Cria o <div /> de um Agente, e adiciona-o à grelha
+     * de agentes.
+     * @@param {{ ID: number, Nome: string, Esquadra: string, Fotografia: string | null }} agente
+     */
+    function adicionarAgente(agente) {
+        let template = divAgente(agente);
+
+        let grelha = document.querySelector('#grelha-agentes');
+
+        grelha.appendChild(template);
+    }
+
+    ///////////////////////////////////////////////////////
+    // Formulário para adicionar um agente, 
+    // e mostrar o agente criado.
+    ///////////////////////////////////////////////////////
+
+    // Adicionar evento para submissão...
+    document.querySelector('#adicionar-agente').addEventListener('submit', function (e) {
+        // Prevenir que o browser submeta o formulário por nós...
+        e.preventDefault();
+
+        // O this é o formulário submetido (<form id="adicionar-agente"></form>)
+        let form = this;
+
+        // Criar o objeto do Agente,
+        // com os campos do Nome e da Esquadra,
+        // através dos valores dos campos no formulário.
+        let agente = {
+            Nome: form.querySelector('[name=nome]').value,
+            Esquadra: form.querySelector('[name=esquadra]').value
+        };
+
+        // Converter em JSON.
+        let jsonData = JSON.stringify(agente);
+
+        // Usar o fetch para enviar o JSON, como POST (quero CRIAR, logo POST)
+        fetch('/api/agentes', { // Ver  Api/AgentesController, método PostAgentes
+            method: 'post', // Quero usar POST
+            headers: { 'Content-Type': 'application/json' }, // Vou enviar JSON
+            body: jsonData // Dados a enviar.
+        })
+        .then(resposta => { // Resposta da criação
+            if (resposta.ok) { // "ok" indica se 200 <= status < 300.
+                return resposta.json(); // JSON do Agente criado.
+            } else {
+                // Erro (vai parar ao catch abaixo)
+                return resposta.json()
+                    .then(erro => Promise.reject(erro));
+            }
+        })
+        // Agente criado. "novoAgente" é o objeto do Agente.
+        // vamos adicionar o novo agente ao ecrã.
+        .then(novoAgente => adicionarAgente(novoAgente))
+        // Ocorreu um erro.
+        .catch(erro => {
+            // Ver o que se passou...
+            // TPC: Mostrar o erro ao utilizador (ver objeto 'erro', estão lá os erros)
+            console.error(erro);
+        });
+    });
+
+    ///////////////////////////////////////////////////////
+    // Arranque
+    ///////////////////////////////////////////////////////
+
+    /**
+     * Inicia o ecrã dos Agentes.
+     */
+    function iniciarAgentes() {
+        getAgentes()
+            .then(agentes => {
+                let grelha = document.querySelector('#grelha-agentes');
+
+                for (let agente of agentes) {
+                    adicionarAgente(agente);
+                }
+            })
+    }
+
+    iniciarAgentes();
+
+</script>
+
+}

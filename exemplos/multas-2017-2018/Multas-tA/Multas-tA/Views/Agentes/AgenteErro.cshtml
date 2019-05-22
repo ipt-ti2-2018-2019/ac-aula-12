@@ -1,0 +1,21 @@
+﻿
+@{
+    ViewBag.Title = "Agentes - Erro";
+}
+
+<h2>Agentes - Erro</h2>
+
+@* 
+    Mostrar um erro ao utilizador. Para ser mais simples,
+    a mensagem é passada por ViewBag.
+
+    Ver o controller dos Agentes, método "Details".
+*@
+<div class="alert alert-warning">
+    @ViewBag.MensagemErro
+    
+    <br />
+
+    Experimente <a href="@Url.Action("Index")">Voltar à lista dos Agentes.</a>
+</div>
+
