@@ -38,7 +38,7 @@ namespace ApiMultas
             services.AddDbContext<ApplicationDbContext>(options =>
                 options
                     // Ativar carregamento automático dos dados (ver aula 11, slide das diferenças da EF)
-                    //.UseLazyLoadingProxies()
+                    .UseLazyLoadingProxies()
                     .UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
             );
 

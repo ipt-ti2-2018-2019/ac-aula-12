@@ -17,10 +17,58 @@ namespace ApiMultas.Controllers
             this.db = db;
         }
 
-        [HttpGet]
+        [HttpGet("")]
         public IActionResult Index()
         {
-            return Ok(db.Agentes.ToList());
+            var resultado = db.Agentes
+                .Select(a => new
+                {
+                    a.ID,
+                    a.Nome,
+                    a.Esquadra,
+                    a.Fotografia,
+                    // Não incluo as multas por questões de desempenho
+                    // (mais queries à BD)
+                })
+                .ToList();
+
+            return Ok(resultado);
+        }
+
+        //[HttpGet, Route("{id}")]
+        [HttpGet("{id}")]
+        public ActionResult Detalhes(int id)
+        {
+            var agente = db.Agentes
+                .FirstOrDefault(a => a.ID == id);
+
+            if (agente == null)
+            {
+                return NotFound("Agente com id " + id + " não existe.");
+            }
+            else
+            {
+                var resultado = new
+                {
+                    agente.ID,
+                    agente.Nome,
+                    agente.Esquadra,
+                    agente.Fotografia,
+                    ListaDeMultas = agente.ListaDeMultas
+                        .Select(m => new
+                        {
+                            m.ID,
+                            m.Infracao,
+                            m.LocalDaMulta,
+                            IDViatura = m.Viatura.ID,
+                            m.DataDaMulta
+                            // ...
+                        })
+                        .ToList()
+                };
+
+                return Ok(resultado);
+            }
         }
     }
 }
