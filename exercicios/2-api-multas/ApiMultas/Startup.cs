@@ -56,11 +56,11 @@ namespace ApiMultas
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             // Fazer o seed da BD.
-            using (var scope = app.ApplicationServices.CreateScope())
-            {
-                var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
-                seeder.Seed();
-            }
+            //using (var scope = app.ApplicationServices.CreateScope())
+            //{
+            //    var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+            //    seeder.Seed();
+            //}
 
             if (env.IsDevelopment())
             {
