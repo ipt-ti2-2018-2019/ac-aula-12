@@ -18,4 +18,22 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\FotosAgentes\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\FotosAgentes\agente.jpg" />
+    <None Include="wwwroot\FotosAgentes\AndreSilveira.jpg" />
+    <None Include="wwwroot\FotosAgentes\AntonioRocha.jpg" />
+    <None Include="wwwroot\FotosAgentes\AugustoCarvalho.jpg" />
+    <None Include="wwwroot\FotosAgentes\BeatrizPinto.jpg" />
+    <None Include="wwwroot\FotosAgentes\ClaudiaPinto.jpg" />
+    <None Include="wwwroot\FotosAgentes\JoseAlves.jpg" />
+    <None Include="wwwroot\FotosAgentes\LurdesVieira.jpg" />
+    <None Include="wwwroot\FotosAgentes\PauloVieira.jpg" />
+    <None Include="wwwroot\FotosAgentes\RuiVieira.jpg" />
+    <None Include="wwwroot\FotosAgentes\TaniaVieira.jpg" />
+  </ItemGroup>
+
 </Project>

@@ -2,7 +2,30 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@* Ver wwwroot/css/site.css ;) *@
+<div id="agentes">A carregar os agentes. Por favor aguarde...</div>
+
+<form id="criarAgente">
+    <label>
+        Nome:
+        <input type="text" required name="nome" id="nome" />
+    </label>
+
+    <label>
+        Esquadra:
+        <input type="text" required name="esquadra" id="esquadra" />
+    </label>
+
+    <label>
+        Foto:
+        <input type="file" required name="foto" id="foto" accept="image/jpeg" />
+    </label>
+
+    <button type="submit">Criar agente</button>
+</form>
+
+
+@section Scripts {
+    <script src="~/js/ApiAgentes.js"></script>
+    <script src="~/js/App.js"></script>
+}

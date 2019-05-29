@@ -38,6 +38,7 @@ namespace ApiMultas
             services.AddDbContext<ApplicationDbContext>(options =>
                 options
                     // Ativar carregamento automático dos dados (ver aula 11, slide das diferenças da EF)
+                    // Não recomendo. Usem o Linq ou o Include.
                     //.UseLazyLoadingProxies()
                     .UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
             );
@@ -55,7 +56,7 @@ namespace ApiMultas
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
-            // Fazer o seed da BD.
+            // Fazer o seed da BD quando a aplicação inicia.
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
