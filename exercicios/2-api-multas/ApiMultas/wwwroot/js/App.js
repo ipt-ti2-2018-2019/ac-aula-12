@@ -93,14 +93,10 @@ function criarDivAgente(agente) {
     return divAgente;
 }
 
-async function main() {
-    try {
-        let agentes = await api.getAgentes();
-        mostraListaAgentes(agentes);
-    } catch (e) {
-        console.error("Erro ao obter agentes", e);
-    }
-}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// CRIAR AGENTES
+////////////////////////////////////////////////////////////////////////////////////////////////////
 
 document.getElementById('criarAgente').onsubmit = async (evt) => {
     // Impedir que o browser submeta
@@ -121,6 +117,32 @@ document.getElementById('criarAgente').onsubmit = async (evt) => {
         document.getElementById('agentes').appendChild(novoDivAgente);
     } catch (e) {
         console.error("Erro ao criar o agente", e);
+    }
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// PESQUISA
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+document.getElementById('pesquisaAgentesForm').onsubmit = async (evt) => {
+    evt.preventDefault();
+
+    let pesquisa = document.getElementById('pesquisaAgentes').value;
+
+    let agentes = await api.getAgentes(pesquisa);
+    mostraListaAgentes(agentes);
+};
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+// MAIN
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+async function main() {
+    try {
+        let agentes = await api.getAgentes();
+        mostraListaAgentes(agentes);
+    } catch (e) {
+        console.error("Erro ao obter agentes", e);
     }
 }
 

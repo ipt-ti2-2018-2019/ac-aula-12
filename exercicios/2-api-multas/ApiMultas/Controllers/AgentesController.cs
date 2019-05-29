@@ -50,8 +50,10 @@ namespace ApiMultas.Controllers
             // texto != null && texto != "" && texto.Trim() != ""
             if (!string.IsNullOrWhiteSpace(pesquisa))
             {
+                pesquisa = pesquisa.ToLower().Trim();
                 // Como queries são imutáveis, guardamos a nova query na variável acima.
-                query = query.Where(a => a.Nome.Contains(pesquisa) || a.Esquadra.Contains(pesquisa));
+                // Convém fazer o lower case (minúsculas) para facilitar as pesquisas.
+                query = query.Where(a => a.Nome.ToLower().Contains(pesquisa) || a.Esquadra.ToLower().Contains(pesquisa));
             }
 
             // Podemos fazer várias composições dinâmicamente, e não só com o .Where.
