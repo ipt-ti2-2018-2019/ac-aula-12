@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,12 +37,27 @@ namespace ApiMultas.Data
     public class DbSeeder
     {
         private readonly ApplicationDbContext db;
+        private readonly UserManager<User> userManager;
 
-        public DbSeeder(ApplicationDbContext db)
+        public DbSeeder(ApplicationDbContext db, UserManager<User> userManager)
         {
             this.db = db;
+            this.userManager = userManager;
         }
-        
+
+        public void SeedIdentity()
+        {
+            // Criar user se não existe.
+            if (!userManager.Users.Any(u => u.UserName == "User1"))
+            {
+                var user = new User { Nome = "Utilizador 1", UserName = "User1" };
+
+                // Estes métodos têm que ser usados com o 'await', ou podemos
+                // usar o 'Wait()' para esperar pelo resultado.
+                userManager.CreateAsync(user, "Teste123##").Wait();
+            }
+        }
+
         public void Seed()
         {
             //*********************************************************************

@@ -27,8 +27,4 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="2.2.0" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="FotosAgentes\" />
-  </ItemGroup>
-
 </Project>

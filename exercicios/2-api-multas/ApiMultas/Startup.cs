@@ -43,9 +43,20 @@ namespace ApiMultas
                     .UseSqlite(Configuration.GetConnectionString("DefaultConnection"))
             );
 
-            services.AddDefaultIdentity<IdentityUser>()
-                .AddDefaultUI(UIFramework.Bootstrap4)
+            // Código que vem por defeito
+            //services.AddDefaultIdentity<User>()
+            //    .AddDefaultUI(UIFramework.Bootstrap4)
+            //    .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Configuração do Identity custom
+            services.AddIdentity<User, IdentityRole>()
                 .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            services.ConfigureApplicationCookie(cookieOptions =>
+            {
+                cookieOptions.LoginPath = new PathString("/api/account/login");
+                cookieOptions.LogoutPath = new PathString("/api/account/logout");
+            });
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
@@ -60,6 +71,8 @@ namespace ApiMultas
             using (var scope = app.ApplicationServices.CreateScope())
             {
                 var seeder = scope.ServiceProvider.GetRequiredService<DbSeeder>();
+
+                seeder.SeedIdentity();
                 seeder.Seed();
             }
 
