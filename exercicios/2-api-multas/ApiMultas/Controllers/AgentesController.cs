@@ -15,16 +15,10 @@ namespace ApiMultas.Controllers
     public class AgentesController : Controller
     {
         private readonly ApplicationDbContext db;
-
-        /// <summary>
-        /// Usado para saber a directoria onde se obtém e guardam os ficheiros.
-        /// </summary>
-        private readonly IHostingEnvironment env;
-
-        public AgentesController(ApplicationDbContext db, IHostingEnvironment env)
+        
+        public AgentesController(ApplicationDbContext db)
         {
             this.db = db;
-            this.env = env;
         }
 
         #region CRUD - Read
@@ -177,7 +171,7 @@ namespace ApiMultas.Controllers
                 return BadRequest(ModelState);
             }
 
-            var pastaFotografias = Path.Combine(env.WebRootPath, "FotosAgentes");
+            var pastaFotografias = CaminhoParaFotos();
 
             if (!Directory.Exists(pastaFotografias))
             {
@@ -303,7 +297,7 @@ namespace ApiMultas.Controllers
             // Apagar a foto, se o agente tiver foto...
             if (agente.Fotografia != null)
             {
-                var caminhoFoto = Path.Combine(env.WebRootPath, "FotosAgentes", agente.Fotografia);
+                var caminhoFoto = Path.Combine(CaminhoParaFotos(), agente.Fotografia);
 
                 try
                 {
@@ -354,13 +348,24 @@ namespace ApiMultas.Controllers
                 foto = "agente.jpg";
             }
 
-            var caminhoFoto = Path.Combine("FotosAgentes", foto);
+            var caminhoFoto = Path.Combine(CaminhoParaFotos(), foto);
 
-            // O método File do controller permite fazer download de um ficheiro numa
-            // determinada pasta, dado o seu caminho.
-            // (o método file é igual, mas usa a directoria wwwroot)
-            return File(caminhoFoto, "image/jpeg");
+            // O método PhysicalFile do controller permite fazer download de um ficheiro numa
+            // determinada pasta, dado o seu caminho. O caminho tem que ser ABSOLUTO.
+            // (o método File é igual, mas usa a directoria wwwroot, e usa um caminho relativo a essa pasta)
+            return PhysicalFile(caminhoFoto, "image/jpeg");
         }
         #endregion
+
+        /// <summary>
+        /// Devolve o caminho ABSOLUTO para a pasta das fotos dos agentes.
+        /// </summary>
+        /// <returns></returns>
+        private string CaminhoParaFotos()
+        {
+            var fullPath = Path.GetFullPath("FotosAgentes");
+
+            return fullPath;
+        }
     }
 }

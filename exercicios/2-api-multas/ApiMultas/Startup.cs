@@ -75,6 +75,15 @@ namespace ApiMultas
                 app.UseHsts();
             }
 
+            // Permitir que outros servidores acedam à API.
+            app.UseCors(corsOptions =>
+            {
+                corsOptions.AllowAnyHeader();
+                corsOptions.AllowAnyOrigin();
+                corsOptions.AllowCredentials();
+                corsOptions.AllowAnyMethod();
+            });
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             app.UseCookiePolicy();
