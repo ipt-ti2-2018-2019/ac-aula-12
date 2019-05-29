@@ -115,6 +115,7 @@ namespace ApiMultas.Controllers
                             m.Infracao,
                             m.ValorMulta,
                             m.LocalDaMulta,
+                            m.DataDaMulta,
                             // Posso incluir as entidades referênciadas da Multa,
                             // (como a Viatura eo  Condutor) desde que faça sentido
                             // (necessite dos dados) e que o resultado não fique muito pesado.

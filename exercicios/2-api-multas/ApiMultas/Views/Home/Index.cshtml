@@ -24,6 +24,27 @@
     <button type="submit">Criar agente</button>
 </form>
 
+<div id="detalhesAgente" class="hidden">
+
+    <div>
+        <button type="button" id="esconderDetalhes">Fechar</button>
+        <h2 id="nomeAgente"></h2>
+        <img id="fotoAgente" />
+
+        <table id="multas" border="1">
+            <thead>
+                <tr>
+                    <th>Local</th>
+                    <th>Infração</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+</div>
+
 
 @section Scripts {
     <script src="~/js/ApiAgentes.js"></script>
