@@ -23,24 +23,45 @@ class ApiAgentes {
     /**
      * Obtém a lista dos agentes.
      * @param {string} pesquisa Termo de pesquisa.
-     * @param {bool} comFoto Só mostrar agentes com foto.
+     * @param {number} minMultas mínimo de multas.
      * @returns {Promise<any[]>} Array de Agentes.
      */
-    async getAgentes(pesquisa = "", comFoto = false) {
-        // A classe URLSearchParams é usada para construir query strings
-        // (isto é ?pesquisa=ourém&comFoto=true)
-        // de forma dinâmica.
-        let termosPesquisa = new URLSearchParams();
+    async getAgentes(pesquisa = "", minMultas = null) {
+        // Opção 1: Usar encodeURIComponent para criar query string de forma SEGURA.
+        //let query = [];
+        
+        //if (pesquisa) {
+        //    query.push("pesquisa=" + encodeURIComponent(pesquisa));
+        //}
 
+        //if (minMultas !== null) {
+        //    query.push("minMultas=" + encodeURIComponent(minMultas.toString()));
+        //}
+
+        //let resposta = await fetch(this.linkApi + "/api/agentes?" + query.join("&"), {
+        //    method: 'GET',
+        //    headers: {
+        //        Accept: 'application/json'
+        //    }
+        //});
+
+        // Opção 2: Classe URLSearchParams
+        // Serve para ler e criar query strings.
+        let query = new URLSearchParams();
+        
         if (pesquisa) {
-            termosPesquisa.set("pesquisa", pesquisa);
+            query.set("pesquisa", pesquisa);
         }
 
-        if (comFoto) {
-            termosPesquisa.set("comFoto", "true");
+        if (minMultas !== null) {
+            query.set("minMultas", minMultas);
         }
 
-        let resposta = await fetch(this.linkApi + "/api/agentes?" + termosPesquisa.toString(), {
+        for (let [nome, valor] of query.entries()) {
+            console.log(nome, "=", valor);
+        }
+
+        let resposta = await fetch(this.linkApi + "/api/agentes?" + query.toString(), {
             method: 'GET',
             headers: {
                 Accept: 'application/json'

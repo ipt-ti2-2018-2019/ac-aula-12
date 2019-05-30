@@ -96,7 +96,10 @@ function mostraDetalhesAgente(agente) {
     // FORMATAR DATAS
     // Posso usar um objeto Intl.DateTimeFormat para formatar datas com diversos aspectos.
     // https://developer.mozilla.org/pt-BR/docs/Web/JavaScript/Reference/Global_Objects/DateTimeFormat
-    let dateFormat = new Intl.DateTimeFormat("pt", { year: 'numeric', month: 'long', day: 'numeric' });
+    let dateFormat = new Intl.DateTimeFormat("pt", {
+        year: 'numeric', month: 'long', day: 'numeric',
+        hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
 
     for (let multa of agente.listaDeMultas) {
         let row = document.createElement('tr');
