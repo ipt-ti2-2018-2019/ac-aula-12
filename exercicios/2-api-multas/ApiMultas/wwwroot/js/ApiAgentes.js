@@ -5,7 +5,7 @@
 class ApiAgentes {
     /**
      * Cria uma nova instância da classe ApiAgentes.
-     * @param {any} linkApi O link "base" da API.
+     * @param {string} linkApi O link "base" da API.
      */
     constructor(linkApi) {
         this.linkApi = linkApi;
@@ -20,6 +20,12 @@ class ApiAgentes {
         return this.linkApi + "/api/agentes/" + id + "/foto";
     }
 
+    /**
+     * Obtém a lista dos agentes.
+     * @param {string} pesquisa Termo de pesquisa.
+     * @param {bool} comFoto Só mostrar agentes com foto.
+     * @returns {Promise<any[]>} Array de Agentes.
+     */
     async getAgentes(pesquisa = "", comFoto = false) {
         // A classe URLSearchParams é usada para construir query strings
         // (isto é ?pesquisa=ourém&comFoto=true)
@@ -51,6 +57,11 @@ class ApiAgentes {
         return agentes;
     }
 
+    /**
+     * Obtém um agente através do seu ID.
+     * @param {number} id ID do agente.
+     * @returns {Promise<any>} Agente.
+     */
     async getAgente(id) {
         let resposta = await fetch(this.linkApi + "/api/agentes/" + id, {
             method: 'GET',
@@ -69,6 +80,13 @@ class ApiAgentes {
         return agente;
     }
 
+    /**
+     * Cria um agente na API.
+     * @param {string} nome Nome do agente.
+     * @param {string} esquadra Esquadra do agente.
+     * @param {File} foto Ficheiro da foto do agente.
+     * @returns {Promise<any>} Agente criado.
+     */
     async createAgente(nome, esquadra, foto) {
         // Usar um objecto do tipo FormData permite-nos enviar ficheiros por AJAX.
         let form = new FormData();
@@ -97,6 +115,11 @@ class ApiAgentes {
         return agenteCriado;
     }
 
+    /**
+     * Atualiza um agente na API.
+     * @param {number} id ID do agente.
+     * @param {string} nome Novo nome do agente
+     */
     async updateAgente(id, nome) {
         let body = {
             nome: nome
@@ -123,6 +146,10 @@ class ApiAgentes {
         // return await this.getAgente(id);
     }
 
+    /**
+     * Apaga um agente da API.
+     * @param {number} id ID do agente a apagar.
+     */
     async deleteAgente(id) {
         let resposta = await fetch(this.linkApi + "/api/agentes/" + id, {
             method: 'DELETE',
