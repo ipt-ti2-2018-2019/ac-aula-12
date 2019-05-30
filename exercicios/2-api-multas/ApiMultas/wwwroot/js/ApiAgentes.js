@@ -27,18 +27,34 @@ class ApiAgentes {
      * @returns {Promise<any[]>} Array de Agentes.
      */
     async getAgentes(pesquisa = "", comFoto = false) {
+
+        let query = [];
+
+        if (pesquisa) {
+            query.push("pesquisa=" + encodeURIComponent(pesquisa));
+        }
+
+        if (comFoto === true) {
+            query.push("comFoto=" + encodeURIComponent(comFoto));
+        }
+
+        let queryString = "?" + query.join("&");
+
+
+
+
         // A classe URLSearchParams é usada para construir query strings
         // (isto é ?pesquisa=ourém&comFoto=true)
         // de forma dinâmica.
-        let termosPesquisa = new URLSearchParams();
+        //let termosPesquisa = new URLSearchParams();
 
-        if (pesquisa) {
-            termosPesquisa.set("pesquisa", pesquisa);
-        }
+        //if (pesquisa) {
+        //    termosPesquisa.set("pesquisa", pesquisa);
+        //}
 
-        if (comFoto) {
-            termosPesquisa.set("comFoto", "true");
-        }
+        //if (comFoto) {
+        //    termosPesquisa.set("comFoto", "true");
+        //}
 
         let resposta = await fetch(this.linkApi + "/api/agentes?" + termosPesquisa.toString(), {
             method: 'GET',
