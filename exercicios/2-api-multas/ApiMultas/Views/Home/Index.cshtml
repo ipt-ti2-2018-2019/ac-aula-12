@@ -2,7 +2,56 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<form id="pesquisaAgentesForm">
+    <input type="text" placeholder="Escreva para pesquisar agentes..." id="pesquisaAgentes" />
+    <button type="submit">Pesquisar agentes</button>
+</form>
+
+@* Ver wwwroot/css/site.css ;) *@
+<div id="agentes">A carregar os agentes. Por favor aguarde...</div>
+
+<form id="criarAgente">
+    <label>
+        Nome:
+        <input type="text" required name="nome" id="nome" />
+    </label>
+
+    <label>
+        Esquadra:
+        <input type="text" required name="esquadra" id="esquadra" />
+    </label>
+
+    <label>
+        Foto:
+        <input type="file" required name="foto" id="foto" accept="image/jpeg" />
+    </label>
+
+    <button type="submit">Criar agente</button>
+</form>
+
+<div id="detalhesAgente" class="hidden">
+
+    <div>
+        <button type="button" id="esconderDetalhes">Fechar</button>
+        <h2 id="nomeAgente"></h2>
+        <img id="fotoAgente" />
+
+        <table id="multas" border="1">
+            <thead>
+                <tr>
+                    <th>Local</th>
+                    <th>Infração</th>
+                    <th>Valor</th>
+                    <th>Data</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 </div>
+
+
+@section Scripts {
+    <script src="~/js/ApiAgentes.js"></script>
+    <script src="~/js/App.js"></script>
+}
