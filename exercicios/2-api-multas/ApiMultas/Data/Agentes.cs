@@ -30,6 +30,8 @@ namespace ApiMultas.Data
         // [Required(ErrorMessage = "O {0} é de preenchimento obrigatório!")]
         public string Fotografia { get; set; }
 
+        //public string ContentTypeFotografia { get; set; }
+
         [Required(ErrorMessage = "O {0} é de preenchimento obrigatório!")]
         [RegularExpression("[A-Za-záéíóúãõàèìòùâêîôûäëïöüç 0-9-]+", ErrorMessage = "Escreva um nome aceitável...")]
         public string Esquadra { get; set; }

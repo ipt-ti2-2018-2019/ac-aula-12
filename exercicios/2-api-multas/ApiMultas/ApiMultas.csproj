@@ -6,9 +6,19 @@
     <AspNetCoreHostingModel>InProcess</AspNetCoreHostingModel>
   </PropertyGroup>
 
-
   <ItemGroup>
-    <None Update="app.db" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="wwwroot\FotosAgentes\agente.jpg" />
+    <None Include="wwwroot\FotosAgentes\AndreSilveira.jpg" />
+    <None Include="wwwroot\FotosAgentes\AntonioRocha.jpg" />
+    <None Include="wwwroot\FotosAgentes\AugustoCarvalho.jpg" />
+    <None Include="wwwroot\FotosAgentes\BeatrizPinto.jpg" />
+    <None Include="wwwroot\FotosAgentes\ClaudiaPinto.jpg" />
+    <None Include="wwwroot\FotosAgentes\JoseAlves.jpg" />
+    <None Include="wwwroot\FotosAgentes\LurdesVieira.jpg" />
+    <None Include="wwwroot\FotosAgentes\PauloVieira.jpg" />
+    <None Include="wwwroot\FotosAgentes\README.md" />
+    <None Include="wwwroot\FotosAgentes\RuiVieira.jpg" />
+    <None Include="wwwroot\FotosAgentes\TaniaVieira.jpg" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using ApiMultas.Data;
+using ApiMultas.Models;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiMultas.Controllers
@@ -17,11 +20,23 @@ namespace ApiMultas.Controllers
             this.db = db;
         }
 
-        // [HttpGet, Route("lista")] // /api/agentes/lista
-        [HttpGet("lista")] // /api/agentes/lista
-        public IActionResult Index()
+        // [HttpGet, Route("")] // /api/agentes
+        [HttpGet("")] // /api/agentes
+        public IActionResult Index(string pesquisa)
         {
-            var resultado = db.Agentes
+            IQueryable<Agentes> query = db.Agentes;
+
+            if (!string.IsNullOrWhiteSpace(pesquisa))
+            {
+                // https://stackoverflow.com/questions/249087/how-do-i-remove-diacritics-accents-from-a-string-in-net
+                pesquisa = pesquisa.ToLower();
+
+                query = query
+                    .Where(a => a.Nome.ToLower().Contains(pesquisa) || 
+                                a.Esquadra.ToLower().Contains(pesquisa));
+            }
+
+            var resultado = query
                 .Select(agente => new
                 {
                     agente.ID,
@@ -76,6 +91,61 @@ namespace ApiMultas.Controllers
             }
         }
 
+
+        [HttpPost("")]
+        public ActionResult Create([FromForm] CreateAgenteModel model)
+        {
+            if (ModelState.IsValid == false)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var pasta = Path.Combine("wwwroot", "FotosAgentes");
+
+            var nomeFicheiro =
+                Guid.NewGuid().ToString() + Path.GetExtension(model.Fotografia.FileName);
+
+            using (Stream output = System.IO.File.OpenWrite(Path.Combine(pasta, nomeFicheiro)))
+            {
+                model.Fotografia.CopyTo(output);
+            }
+
+            var novoAgente = new Agentes
+            {
+                Nome = model.Nome,
+                Esquadra = model.Esquadra,
+                Fotografia = nomeFicheiro,
+                //ContentTypeFotografia = model.Fotografia.ContentType
+            };
+
+            db.Agentes.Add(novoAgente);
+
+            db.SaveChanges();
+
+            return Ok(new
+            {
+                novoAgente.ID,
+                novoAgente.Esquadra,
+                novoAgente.Fotografia,
+                novoAgente.Nome
+            });
+        }
+
+        [HttpGet("{id}/foto")]
+        public ActionResult GetFoto(int id)
+        {
+            var agente = db.Agentes.Find(id);
+
+            if (agente == null)
+            {
+                return NotFound("Não é possível obter a foto do agente " + id + " porque este não existe.");
+            }
+
+            var caminhoFicheiro = Path.Combine("FotosAgentes", agente.Fotografia);
+            
+            //return File(caminhoFicheiro, agente.ContentTypeFotografia);
+            return File(caminhoFicheiro, "image/jpeg");
+        }
     }
 }
   
